@@ -3,6 +3,7 @@
 """
 from typing import Tuple, List
 
+
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """use mypy to validate the code below
     args:
