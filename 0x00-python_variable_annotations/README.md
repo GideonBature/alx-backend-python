@@ -5,7 +5,7 @@
 
 _For this project, we expect you to look at this concept:_
 
-*   [Advanced Python](https://github.com/GideonBature/alx-backend-python/tree/main/concept_pages)
+*   [Advanced Python](https://github.com/GideonBature/alx-backend-python/tree/main/0x00-python_variable_annotations/concept_pages)
 
 ![](https://i.redd.it/y9y25tefi5401.png)
 
