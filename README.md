@@ -5,7 +5,7 @@
 
 _For this project, we expect you to look at this concept:_
 
-*   [Advanced Python](/concepts/554)
+*   [Advanced Python](https://github.com/GideonBature/alx-backend-python/tree/main/concept_pages)
 
 ![](https://i.redd.it/y9y25tefi5401.png)
 
