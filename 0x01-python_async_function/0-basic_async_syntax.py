@@ -8,7 +8,7 @@ import random
 async def wait_random(max_delay: int = 10) -> float:
     """asynchronous coroutine
     param:
-        @max_delay: float
+        @max_delay: int
     return:
         float
     """
