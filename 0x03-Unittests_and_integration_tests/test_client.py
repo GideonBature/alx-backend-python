@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """4. Parameterize and patch as decorators
+5. Mocking a property
+6. More patching
+7. Parameterize
+8. Integration test: fixtures
+9. Integration tests
 """
 import unittest
 from unittest.mock import patch, PropertyMock
@@ -62,3 +67,13 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(repos, [repo["name"] for repo in mock_repo_data])
             mock_get_json.assert_called_once_with(url)
             mock_public_repos_url.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    def test_has_license(self, r, l_key, exp):
+        """Test that GithubOrgClient.has_license
+        returns the correct JSON response.
+        """
+        self.assertEqual(GithubOrgClient.has_license(r, l_key), exp)
