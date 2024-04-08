@@ -7,9 +7,10 @@
 9. Integration tests
 """
 import unittest
-from unittest.mock import patch, PropertyMock
-from parameterized import parameterized
+from unittest.mock import patch, PropertyMock, Mock
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
+import requests
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -77,3 +78,40 @@ class TestGithubOrgClient(unittest.TestCase):
         returns the correct JSON response.
         """
         self.assertEqual(GithubOrgClient.has_license(r, l_key), exp)
+
+
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration test
+    """
+    @parameterized.expand([
+        ("google",),
+        ("abc",),
+    ])
+    def test_org(self, org_name):
+        """Test that GithubOrgClient.org returns
+        the correct JSON response.
+        """
+        with patch('client.get_json') as mocked_get_json:
+            mocked_get_json.side_effect = [
+                org_payload,
+                repos_payload,
+            ]
+
+            client = GithubOrgClient('some_org')
+            self.assertEqual(client.public_repos(), expected_repos)
+            mocked_get_json.assert_called()
+
+    def test_public_repos_with_license(self):
+        """Test that GithubOrgClient.public_repos
+        returns the correct JSON response.
+        """
+        with patch('client.get_json') as mocked_get_json:
+            mocked_get_json.side_effect = [
+                org_payload,
+                repos_payload,
+            ]
+
+            client = GithubOrgClient('some_org')
+            self.assertEqual(client.public_repos(license="apache-2.0"),
+                             apache2_repos)
+            mocked_get_json.assert_called()
