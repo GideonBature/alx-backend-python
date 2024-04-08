@@ -76,15 +76,14 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc",),
     ])
     @patch('client.get_json')
-    def test_org(self, org_name, mocked):
-        """Test org
+    def test_org(self, org_name, mock_get_json):
+        """Test that GithubOrgClient.org returns
+        the correct JSON response.
         """
-        json_payload = {"name": org_name}
-        mocked.return_value = json_payload
+        url = f"https://api.github.com/orgs/{org_name}"
+        expected_org = {"login": org_name, 'url': url}
+        mock_get_json.return_value = expected_org
 
-        org = GithubOrgClient(org_name)
-        result = org.org
-
-        self.assertEqual(result, json_payload)
-        _str = f"https://api.github.com/orgs/{org_name}"
-        mocked.assert_called_once_with(_str)
+        client = GithubOrgClient(org_name)
+        self.assertEqual(client.org, expected_org)
+        mock_get_json.assert_called_once_with(url)
