@@ -88,7 +88,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         ("google",),
         ("abc",),
     ])
-    def test_org(self, org_name):
+    def test_public_repos(self):
         """Test that GithubOrgClient.org returns
         the correct JSON response.
         """
