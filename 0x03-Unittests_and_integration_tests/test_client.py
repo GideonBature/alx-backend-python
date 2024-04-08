@@ -11,6 +11,7 @@ from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 import requests
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -80,9 +81,39 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(GithubOrgClient.has_license(r, l_key), exp)
 
 
+@parameterized_class(
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'), [
+        (org_payload, repos_payload, expected_repos, apache2_repos),
+])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration test
     """
+    @classmethod
+    def setUpClass(cls):
+        """setUpClass
+        """
+        cls.get_patcher = patch('client.requests.get')
+        cls.mock_get = cls.get_patcher.start()
+
+        def side_effect(url, *args, **kwargs):
+            """side_effect
+            """
+            if 'orgs' in url:
+                return Mock(json=lambda: cls.org_payload)
+            elif 'repos' in url:
+                return Mock(json=lambda: cls.repos_payload)
+            else:
+                raise ValueError(f'Unexpected URL called: {url}')
+
+        cls.mock_get.side_effect = side_effect
+
+    @classmethod
+    def tearDownClass(cls):
+        """tearDownClass
+        """
+        cls.get_patcher.stop()
+
+
     @parameterized.expand([
         ("google",),
         ("abc",),
