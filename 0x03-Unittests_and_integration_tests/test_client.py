@@ -11,6 +11,7 @@ from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 import requests
+import fixtures
 
 
 class TestGithubOrgClient(unittest.TestCase):
